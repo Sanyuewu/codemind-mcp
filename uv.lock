@@ -139,6 +139,7 @@ dependencies = [
     { name = "structlog" },
     { name = "tree-sitter" },
     { name = "tree-sitter-languages" },
+    { name = "typer" },
 ]
 
 [package.dev-dependencies]
@@ -157,6 +158,7 @@ requires-dist = [
     { name = "structlog", specifier = ">=25.5.0" },
     { name = "tree-sitter", specifier = ">=0.21.0,<0.22" },
     { name = "tree-sitter-languages", specifier = ">=1.10.2" },
+    { name = "typer", specifier = ">=0.25.1" },
 ]
 
 [package.metadata.requires-dev]
