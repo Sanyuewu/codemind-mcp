@@ -1,13 +1,16 @@
-"""Integration tests for Embedder + VectorStore."""
+"""Integration tests for Embedder + VectorStore + MetadataStore + BM25Retriever."""
 from __future__ import annotations
 
 import asyncio
+from datetime import datetime, timezone
 
 import pytest
 
 from codemind.config import Settings
 from codemind.indexing.embedder import Embedder, chunk_to_text
-from codemind.models import CodeChunk
+from codemind.models import CodeChunk, FileMeta
+from codemind.retrieval.sparse import BM25Retriever
+from codemind.storage.metadata_store import MetadataStore
 from codemind.storage.vector_store import VectorStore
 
 
@@ -117,6 +120,102 @@ def test_delete_by_file(config, embedder, three_chunks, tmp_path):
         chunk_ids = [r[0] for r in results]
         assert three_chunks[0].chunk_id not in chunk_ids, (
             "Deleted chunk still appears in search results"
+        )
+
+    asyncio.run(_run())
+
+
+# ---------------------------------------------------------------------------
+# MetadataStore + BM25Retriever
+# ---------------------------------------------------------------------------
+
+_FILE_PATHS = {
+    "src/auth.py": "python",
+    "src/db.py": "python",
+    "src/cache.py": "python",
+}
+
+
+def _save_meta_and_chunks(store: MetadataStore, chunks: list[CodeChunk], file_map: dict) -> None:
+    async def _run():
+        for fp, lang in file_map.items():
+            await store.save_file_meta(FileMeta(
+                path=fp, language=lang, content_hash="0" * 64,
+                last_indexed_at=datetime.now(timezone.utc), chunk_count=1,
+            ))
+        for chunk in chunks:
+            await store.save_chunk(chunk)
+    asyncio.run(_run())
+
+
+def test_metadata_save_and_bm25_search(three_chunks, tmp_path):
+    cfg = Settings(repo_path=tmp_path, data_dir=tmp_path / ".codemind4")
+
+    async def _run():
+        store = MetadataStore(cfg)
+        for fp, lang in _FILE_PATHS.items():
+            await store.save_file_meta(FileMeta(
+                path=fp, language=lang, content_hash="0" * 64,
+                last_indexed_at=datetime.now(timezone.utc), chunk_count=1,
+            ))
+        for chunk in three_chunks:
+            await store.save_chunk(chunk)
+
+        retriever = BM25Retriever(store)
+        await retriever.initialize()
+
+        results = retriever.search("verify_token", top_k=3)
+        assert len(results) >= 1, f"Expected at least 1 BM25 result, got {len(results)}"
+        chunk_ids = [r[0] for r in results]
+        assert three_chunks[0].chunk_id in chunk_ids, (
+            f"Expected {three_chunks[0].chunk_id!r} in top-3, got {chunk_ids}"
+        )
+        # BM25 returns 0.0 for docs not containing the query term — only check top-1
+        assert results[0][1] > 0.0, (
+            f"Top BM25 score must be positive, got {results[0][1]}"
+        )
+
+    asyncio.run(_run())
+
+
+def test_bm25_language_filter(three_chunks, tmp_path):
+    ts_chunk = CodeChunk(
+        chunk_id="d" * 16,
+        file_path="src/utils.ts",
+        language="typescript",
+        chunk_type="function",
+        name="verify_token",
+        signature="function verify_token(token: string): object",
+        docstring=None,
+        code="function verify_token(token: string): object { return {}; }",
+        start_line=1,
+        end_line=1,
+    )
+    all_chunks = three_chunks + [ts_chunk]
+    file_map = {**_FILE_PATHS, "src/utils.ts": "typescript"}
+
+    cfg = Settings(repo_path=tmp_path, data_dir=tmp_path / ".codemind5")
+
+    async def _run():
+        store = MetadataStore(cfg)
+        for fp, lang in file_map.items():
+            await store.save_file_meta(FileMeta(
+                path=fp, language=lang, content_hash="0" * 64,
+                last_indexed_at=datetime.now(timezone.utc), chunk_count=1,
+            ))
+        for chunk in all_chunks:
+            await store.save_chunk(chunk)
+
+        retriever = BM25Retriever(store)
+        await retriever.initialize()
+
+        results_py = retriever.search("verify_token", top_k=4, language="python")
+        ids = [r[0] for r in results_py]
+        assert ts_chunk.chunk_id not in ids, (
+            "TypeScript chunk must not appear in python-filtered results"
+        )
+        assert three_chunks[0].chunk_id in ids, (
+            f"Python verify_token chunk {three_chunks[0].chunk_id!r} must appear in results"
         )
 
     asyncio.run(_run())
