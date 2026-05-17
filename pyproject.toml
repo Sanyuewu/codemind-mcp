@@ -15,7 +15,14 @@ dependencies = [
     "mcp>=1.27.1",
     "pydantic-settings>=2.14.1",
     "structlog>=25.5.0",
+    "tree-sitter>=0.21.0,<0.22",
+    "tree-sitter-languages>=1.10.2",
 ]
 
 [project.scripts]
 codemind = "codemind.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
