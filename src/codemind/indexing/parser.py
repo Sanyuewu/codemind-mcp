@@ -10,6 +10,9 @@ from codemind.exceptions import ParserError
 
 _EXTENSION_TO_LANGUAGE: dict[str, str] = {
     ".py": "python",
+    ".ts": "typescript",
+    ".java": "java",
+    ".go": "go",
 }
 
 
