@@ -1,6 +1,6 @@
-def main():
-    print("Hello from codemind-mcp!")
+import asyncio
 
+from codemind.server import main
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
