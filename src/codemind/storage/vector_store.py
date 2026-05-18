@@ -22,14 +22,16 @@ _COLLECTION = "codemind_chunks"
 
 class VectorStore:
     def __init__(self, config: Settings) -> None:
-        qdrant_path = str(config.data_dir / "qdrant")
-        self._client = AsyncQdrantClient(path=qdrant_path)
+        self._qdrant_path = str(config.data_dir / "qdrant")
         self._dim = config.embedding_dim
+        self._client: AsyncQdrantClient | None = None
         self._ready = False
 
     async def _ensure_collection(self) -> None:
         if self._ready:
             return
+        if self._client is None:
+            self._client = AsyncQdrantClient(path=self._qdrant_path)
         try:
             collections = await self._client.get_collections()
             names = {c.name for c in collections.collections}
