@@ -38,7 +38,6 @@ class Embedder:
         )
 
     def encode(self, texts: list[str]) -> list[list[float]]:
-        log.debug("retrieval.dense", query=texts[0][:80] if texts else "", candidates=len(texts))
         embeddings = self._model.encode(
             texts,
             batch_size=self._batch_size,

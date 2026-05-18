@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import time
 
 import structlog
 from rank_bm25 import BM25Okapi
@@ -42,6 +43,7 @@ class BM25Retriever:
         if self._bm25 is None:
             return []
         tokens = re.findall(r"[a-zA-Z0-9_]+", query.lower())
+        start = time.monotonic()
         scores = self._bm25.get_scores(tokens)
         ranked = sorted(
             (
@@ -53,7 +55,8 @@ class BM25Retriever:
             reverse=True,
         )
         results = ranked[:top_k]
-        log.debug("retrieval.bm25", query=query[:80], candidates=len(results))
+        duration_ms = round((time.monotonic() - start) * 1000)
+        log.debug("retrieval.bm25", query=query[:80], candidates=len(results), duration_ms=duration_ms)
         return results
 
     async def update(self, new_chunks: list[CodeChunk]) -> None:

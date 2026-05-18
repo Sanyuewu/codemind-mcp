@@ -278,6 +278,44 @@ class MetadataStore:
         except Exception as e:
             raise StorageError(f"Failed to get file paths: {e}") from e
 
+    async def find_by_name(
+        self,
+        name: str,
+        file_path: str | None = None,
+    ) -> list[CodeChunk]:
+        def _sync() -> list[CodeChunk]:
+            stmt = select(self._chunks_tbl).where(self._chunks_tbl.c.name == name)
+            if file_path is not None:
+                stmt = stmt.where(self._chunks_tbl.c.file_path == file_path)
+            with self._engine.connect() as conn:
+                rows = conn.execute(stmt).fetchall()
+            return [self._row_to_chunk(r) for r in rows]
+
+        try:
+            return await asyncio.to_thread(_sync)
+        except Exception as e:
+            raise StorageError(f"Failed to find chunks by name '{name}': {e}") from e
+
+    async def search_in_code(
+        self,
+        symbol: str,
+        language: str | None = None,
+    ) -> list[CodeChunk]:
+        def _sync() -> list[CodeChunk]:
+            stmt = select(self._chunks_tbl).where(
+                self._chunks_tbl.c.code.like(f"%{symbol}%")
+            )
+            if language is not None:
+                stmt = stmt.where(self._chunks_tbl.c.language == language)
+            with self._engine.connect() as conn:
+                rows = conn.execute(stmt).fetchall()
+            return [self._row_to_chunk(r) for r in rows]
+
+        try:
+            return await asyncio.to_thread(_sync)
+        except Exception as e:
+            raise StorageError(f"Failed to search code for symbol '{symbol}': {e}") from e
+
     # ── private helper for BM25Retriever ─────────────────────────────────────
 
     async def _get_language_map(self) -> dict[str, str]:

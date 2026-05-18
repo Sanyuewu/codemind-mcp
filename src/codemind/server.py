@@ -138,6 +138,7 @@ async def main() -> None:
     _settings = settings
     _metadata_store = MetadataStore(settings)
     _retriever = Retriever(_metadata_store, settings)
+    await _retriever.initialize()
 
     async with stdio_server() as (read_stream, write_stream):
         await server.run(

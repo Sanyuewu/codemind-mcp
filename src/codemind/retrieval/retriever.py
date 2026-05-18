@@ -1,31 +1,153 @@
 from __future__ import annotations
 
+import asyncio
+import time
+
+import structlog
+
 from codemind.config import Settings
+from codemind.exceptions import RetrievalError
+from codemind.indexing.embedder import Embedder
 from codemind.models import CodeChunk, Reference, RetrievedChunk, SearchQuery
+from codemind.retrieval.dense import DenseRetriever
+from codemind.retrieval.hybrid import reciprocal_rank_fusion
+from codemind.retrieval.rerank import Reranker
+from codemind.retrieval.sparse import BM25Retriever
 from codemind.storage.metadata_store import MetadataStore
+from codemind.storage.vector_store import VectorStore
+
+log = structlog.get_logger()
 
 
 class Retriever:
     def __init__(self, metadata_store: MetadataStore, settings: Settings) -> None:
         self._metadata_store = metadata_store
         self._settings = settings
+        self._embedder = Embedder(settings)
+        self._vector_store = VectorStore(settings)
+        self._bm25 = BM25Retriever(metadata_store)
+        self._dense = DenseRetriever(self._embedder, self._vector_store)
+        self._reranker = Reranker(settings) if settings.enable_reranker else None
+        self._initialized = False
+        self._init_lock = asyncio.Lock()
+
+    async def initialize(self) -> None:
+        async with self._init_lock:
+            if not self._initialized:
+                await self._bm25.initialize()
+                self._initialized = True
 
     async def search(self, query: SearchQuery) -> list[RetrievedChunk]:
-        return []
+        timeout = self._settings.retrieval_timeout_ms / 1000
+        try:
+            return await asyncio.wait_for(self._search_impl(query), timeout=timeout)
+        except asyncio.TimeoutError:
+            log.warning(
+                "retrieval.timeout",
+                query=query.query[:80],
+                timeout_ms=self._settings.retrieval_timeout_ms,
+            )
+            raise RetrievalError(
+                f"Search timed out after {self._settings.retrieval_timeout_ms}ms"
+            )
+
+    async def _search_impl(self, query: SearchQuery) -> list[RetrievedChunk]:
+        qdrant_filters: dict = {}
+        if query.language:
+            qdrant_filters["language"] = query.language
+
+        bm25_task = asyncio.create_task(
+            asyncio.to_thread(
+                self._bm25.search,
+                query.query,
+                self._settings.bm25_top_k,
+                query.language,
+            )
+        )
+        dense_task = asyncio.create_task(
+            self._dense.search(
+                query.query,
+                self._settings.dense_top_k,
+                qdrant_filters or None,
+            )
+        )
+        bm25_results, dense_results = await asyncio.gather(bm25_task, dense_task)
+
+        fused = reciprocal_rank_fusion(bm25_results, dense_results, self._settings.rrf_k)
+        top_candidates = fused[: self._settings.rerank_input_top_k]
+
+        if not top_candidates:
+            return []
+
+        chunk_ids = [cid for cid, _ in top_candidates]
+        rrf_score_map = dict(top_candidates)
+
+        chunks_raw = await asyncio.gather(
+            *[self._metadata_store.get_chunk(cid) for cid in chunk_ids]
+        )
+        chunks = [c for c in chunks_raw if c is not None]
+
+        if query.chunk_types:
+            chunks = [c for c in chunks if c.chunk_type in query.chunk_types]
+
+        if not chunks:
+            return []
+
+        if self._reranker is not None:
+            start_rr = time.monotonic()
+            results = await self._reranker.rerank(query.query, chunks)
+            duration_ms = round((time.monotonic() - start_rr) * 1000)
+            log.debug(
+                "retrieval.rerank",
+                input_count=len(chunks),
+                output_count=len(results),
+                duration_ms=duration_ms,
+            )
+        else:
+            max_score = max((rrf_score_map[c.chunk_id] for c in chunks), default=1.0)
+            if max_score == 0.0:
+                max_score = 1.0
+            results = [
+                RetrievedChunk(
+                    chunk=chunk,
+                    score=rrf_score_map[chunk.chunk_id] / max_score,
+                    retrieval_method="hybrid",
+                    debug_info={"rrf_score": rrf_score_map[chunk.chunk_id]},
+                )
+                for chunk in chunks
+            ]
+            results.sort(key=lambda r: r.score, reverse=True)
+
+        return results[: query.top_k]
 
     async def get_chunk_by_id(self, chunk_id: str) -> CodeChunk | None:
-        return None
+        return await self._metadata_store.get_chunk(chunk_id)
 
     async def find_function(
         self,
         name: str,
         file_path: str | None = None,
     ) -> list[CodeChunk]:
-        return []
+        return await self._metadata_store.find_by_name(name, file_path)
 
     async def find_references(
         self,
         symbol: str,
         language: str | None = None,
     ) -> list[Reference]:
-        return []
+        chunks = await self._metadata_store.search_in_code(symbol, language)
+        refs: list[Reference] = []
+        for chunk in chunks:
+            for i, line in enumerate(chunk.code.splitlines(), start=0):
+                if symbol in line:
+                    refs.append(
+                        Reference(
+                            file_path=chunk.file_path,
+                            line_number=chunk.start_line + i,
+                            line_content=line.strip(),
+                            enclosing_function=(
+                                chunk.name if chunk.chunk_type != "module" else None
+                            ),
+                        )
+                    )
+        return refs
