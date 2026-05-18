@@ -140,11 +140,12 @@ async def main() -> None:
     _settings = settings
     _metadata_store = MetadataStore(settings)
     _retriever = Retriever(_metadata_store, settings)
-    # Pre-warm thread pool so first tool call (list_files etc.) isn't delayed
-    await asyncio.to_thread(lambda: None)
-    # Embedding model loaded lazily on first semantic_search call
 
     async with stdio_server() as (read_stream, write_stream):
+        # Start loading embedding model in background immediately after handshake.
+        # By the time the user types and sends a semantic_search query the model
+        # is likely already warm, eliminating the cold-start timeout.
+        asyncio.create_task(_retriever.initialize())
         await server.run(
             read_stream,
             write_stream,
