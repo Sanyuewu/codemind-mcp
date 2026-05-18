@@ -140,7 +140,9 @@ async def main() -> None:
     _settings = settings
     _metadata_store = MetadataStore(settings)
     _retriever = Retriever(_metadata_store, settings)
-    # Embedding model loaded lazily on first tool call to keep startup < 1s
+    # Pre-warm thread pool so first tool call (list_files etc.) isn't delayed
+    await asyncio.to_thread(lambda: None)
+    # Embedding model loaded lazily on first semantic_search call
 
     async with stdio_server() as (read_stream, write_stream):
         await server.run(
