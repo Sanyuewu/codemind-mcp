@@ -151,7 +151,7 @@ class Indexer:
         await self._metadata_store.delete_by_file(rel_path)
         await self._vector_store.delete_by_file(rel_path)
 
-        chunks = chunk_file(file_path)
+        chunks = chunk_file(file_path, rel_path=rel_path)
         texts = [chunk_to_text(c) for c in chunks]
         embeddings = self._embedder.encode(texts)
 

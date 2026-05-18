@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import re
 import time
 
 import structlog
@@ -23,17 +24,21 @@ class Retriever:
     def __init__(self, metadata_store: MetadataStore, settings: Settings) -> None:
         self._metadata_store = metadata_store
         self._settings = settings
-        self._embedder = Embedder(settings)
         self._vector_store = VectorStore(settings)
         self._bm25 = BM25Retriever(metadata_store)
-        self._dense = DenseRetriever(self._embedder, self._vector_store)
-        self._reranker = Reranker(settings) if settings.enable_reranker else None
+        self._reranker: Reranker | None = None
+        self._embedder: Embedder | None = None
+        self._dense: DenseRetriever | None = None
         self._initialized = False
         self._init_lock = asyncio.Lock()
 
     async def initialize(self) -> None:
         async with self._init_lock:
             if not self._initialized:
+                self._embedder = await asyncio.to_thread(Embedder, self._settings)
+                self._dense = DenseRetriever(self._embedder, self._vector_store)
+                if self._settings.enable_reranker:
+                    self._reranker = await asyncio.to_thread(Reranker, self._settings)
                 await self._bm25.initialize()
                 self._initialized = True
 
@@ -137,9 +142,10 @@ class Retriever:
     ) -> list[Reference]:
         chunks = await self._metadata_store.search_in_code(symbol, language)
         refs: list[Reference] = []
+        _symbol_re = re.compile(r"\b" + re.escape(symbol) + r"\b")
         for chunk in chunks:
             for i, line in enumerate(chunk.code.splitlines(), start=0):
-                if symbol in line:
+                if _symbol_re.search(line):
                     refs.append(
                         Reference(
                             file_path=chunk.file_path,

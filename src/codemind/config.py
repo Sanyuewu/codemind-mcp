@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     ])
 
     # ── 超时 ──────────────────────────────────
-    retrieval_timeout_ms: int = Field(default=2000)
+    retrieval_timeout_ms: int = Field(default=8000)
     embedding_timeout_ms: int = Field(default=5000)
 
     # ── 日志 ──────────────────────────────────

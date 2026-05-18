@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import sys
 import time
 
 import structlog
@@ -32,7 +33,7 @@ def _configure_logging(settings: Settings) -> None:
         wrapper_class=structlog.make_filtering_bound_logger(
             getattr(logging, settings.log_level)
         ),
-        logger_factory=structlog.PrintLoggerFactory(),
+        logger_factory=structlog.PrintLoggerFactory(file=sys.stderr),
     )
 
 
@@ -111,6 +112,7 @@ async def _dispatch(name: str, arguments: dict) -> list[TextContent]:
     assert _settings is not None
 
     if name == "semantic_search":
+        await _retriever.initialize()  # loads embedding model on first call only
         return await search.handle(arguments, _retriever, _metadata_store, _settings)
     elif name == "get_function_by_name":
         return await get_function.handle(arguments, _retriever, _metadata_store, _settings)
@@ -138,7 +140,7 @@ async def main() -> None:
     _settings = settings
     _metadata_store = MetadataStore(settings)
     _retriever = Retriever(_metadata_store, settings)
-    await _retriever.initialize()
+    # Embedding model loaded lazily on first tool call to keep startup < 1s
 
     async with stdio_server() as (read_stream, write_stream):
         await server.run(

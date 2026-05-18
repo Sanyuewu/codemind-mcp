@@ -56,6 +56,10 @@ async def handle(
     settings: Settings,
 ) -> list[TextContent]:
     file_path = arguments["file_path"]
+    _repo_str = str(settings.repo_path).replace("\\", "/")
+    _fp_normalized = file_path.replace("\\", "/")
+    if _fp_normalized.startswith(_repo_str):
+        file_path = _fp_normalized[len(_repo_str):].lstrip("/")
     start_line = arguments.get("start_line", 1)
     end_line = arguments.get("end_line")
 

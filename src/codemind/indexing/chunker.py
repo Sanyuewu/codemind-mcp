@@ -322,12 +322,12 @@ _LANGUAGE_CONFIGS: dict[str, LanguageConfig] = {
 # Public entry point
 # ---------------------------------------------------------------------------
 
-def chunk_file(path: Path) -> list[CodeChunk]:
+def chunk_file(path: Path, rel_path: str | None = None) -> list[CodeChunk]:
     """Parse a source file and return an AST-aware list of CodeChunks."""
     tree = parse_file(path)
     source = path.read_bytes()
     language = get_language(path)
-    file_path = path.as_posix()
+    file_path = rel_path if rel_path is not None else path.as_posix()
 
     config = _LANGUAGE_CONFIGS.get(language)
     if config is None:
