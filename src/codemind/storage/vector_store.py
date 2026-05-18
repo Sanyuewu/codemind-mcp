@@ -27,6 +27,10 @@ class VectorStore:
         self._client: AsyncQdrantClient | None = None
         self._ready = False
 
+    async def ensure_ready(self) -> None:
+        """Pre-open Qdrant client and verify collection. Call during warmup."""
+        await self._ensure_collection()
+
     async def _ensure_collection(self) -> None:
         if self._ready:
             return

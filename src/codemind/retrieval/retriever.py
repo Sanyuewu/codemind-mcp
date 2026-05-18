@@ -39,6 +39,8 @@ class Retriever:
                 self._dense = DenseRetriever(self._embedder, self._vector_store)
                 if self._settings.enable_reranker:
                     self._reranker = await asyncio.to_thread(Reranker, self._settings)
+                # Pre-open Qdrant so _search_impl() only does the actual search
+                await self._vector_store.ensure_ready()
                 await self._bm25.initialize()
                 self._initialized = True
 
