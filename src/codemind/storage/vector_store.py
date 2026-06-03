@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+
 import structlog
 from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import (
@@ -35,7 +37,12 @@ class VectorStore:
         if self._ready:
             return
         if self._client is None:
-            self._client = AsyncQdrantClient(path=self._qdrant_path)
+            # Run synchronous Qdrant init (portalocker + disk I/O) in a thread
+            # so the event loop is never blocked while waiting for the file lock.
+            _path = self._qdrant_path
+            self._client = await asyncio.to_thread(
+                lambda: AsyncQdrantClient(path=_path)
+            )
         try:
             collections = await self._client.get_collections()
             names = {c.name for c in collections.collections}
