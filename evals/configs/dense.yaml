@@ -1,0 +1,8 @@
+# Dense-only ablation (Day 12)
+# TODO Day 12: add disable_bm25 flag to retriever to skip BM25 retrieval path
+enable_reranker: false
+bm25_top_k: 0
+dense_top_k: 20
+rrf_k: 60
+rerank_input_top_k: 10
+retrieval_timeout_ms: 20000

@@ -1,0 +1,8 @@
+# Hybrid retrieval without reranking (ablation: remove reranker)
+# BM25 top-20 + Dense top-20 → RRF → final top-K (no reranker)
+enable_reranker: false
+bm25_top_k: 20
+dense_top_k: 20
+rrf_k: 60
+rerank_input_top_k: 10
+retrieval_timeout_ms: 20000
