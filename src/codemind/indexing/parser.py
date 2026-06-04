@@ -3,10 +3,13 @@ from __future__ import annotations
 import warnings
 from pathlib import Path
 
+import structlog
 from tree_sitter import Tree
 from tree_sitter_languages import get_parser as _get_ts_parser
 
 from codemind.exceptions import ParserError
+
+log = structlog.get_logger()
 
 _EXTENSION_TO_LANGUAGE: dict[str, str] = {
     ".py": "python",
@@ -53,6 +56,9 @@ def parse_file(path: Path) -> Tree:
         raise ParserError(f"Parser returned empty AST for {path}")
 
     if tree.root_node.has_error:
-        raise ParserError(f"Syntax errors detected in {path}")
+        # tree-sitter 1.10.2 Python grammar misreports trailing commas inside
+        # Annotated[...,] subscripts as errors; the recovered AST is still
+        # usable for function-level chunking, so log and continue.
+        log.warning("parser.has_errors", path=str(path))
 
     return tree
