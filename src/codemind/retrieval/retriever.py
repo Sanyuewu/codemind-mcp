@@ -23,6 +23,28 @@ from codemind.storage.vector_store import VectorStore
 log = structlog.get_logger()
 
 
+def _apply_source_boost(
+    results: list[RetrievedChunk],
+    settings: Settings,
+) -> list[RetrievedChunk]:
+    boosted = [
+        RetrievedChunk(
+            chunk=rc.chunk,
+            score=rc.score * settings.source_boost_factor
+            if not any(
+                PurePosixPath(rc.chunk.file_path).match(pat)
+                for pat in settings.test_doc_patterns
+            )
+            else rc.score,
+            retrieval_method=rc.retrieval_method,
+            debug_info=rc.debug_info,
+        )
+        for rc in results
+    ]
+    boosted.sort(key=lambda r: r.score, reverse=True)
+    return boosted
+
+
 class Retriever:
     def __init__(self, metadata_store: MetadataStore, settings: Settings) -> None:
         self._metadata_store = metadata_store
@@ -127,18 +149,6 @@ class Retriever:
         )
         chunks = [c for c in chunks_raw if c is not None]
 
-        # Boost source-file scores: files not matching any test/doc pattern get multiplied
-        if self._settings.source_boost_factor != 1.0:
-            for chunk in chunks:
-                if not any(
-                    PurePosixPath(chunk.file_path).match(pat)
-                    for pat in self._settings.test_doc_patterns
-                ):
-                    score_map[chunk.chunk_id] = (
-                        score_map.get(chunk.chunk_id, 0.0)
-                        * self._settings.source_boost_factor
-                    )
-
         if query.chunk_types:
             chunks = [c for c in chunks if c.chunk_type in query.chunk_types]
 
@@ -155,6 +165,8 @@ class Retriever:
                 output_count=len(reranked),
                 duration_ms=duration_ms,
             )
+            if self._settings.source_boost_factor != 1.0:
+                reranked = _apply_source_boost(reranked, self._settings)
             return reranked[: query.top_k]
 
         max_score = max((score_map[c.chunk_id] for c in chunks), default=1.0)
@@ -170,6 +182,8 @@ class Retriever:
             for chunk in chunks
         ]
         ranked.sort(key=lambda r: r.score, reverse=True)
+        if self._settings.source_boost_factor != 1.0:
+            ranked = _apply_source_boost(ranked, self._settings)
         return ranked[: query.top_k]
 
     async def get_chunk_by_id(self, chunk_id: str) -> CodeChunk | None:
