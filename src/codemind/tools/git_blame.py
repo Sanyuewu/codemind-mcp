@@ -69,23 +69,23 @@ async def handle(
 
         blame_lines: list[BlameLine] = []
         line_number = 1
-        for commit, file_lines in blame_data:
-            for raw_line in file_lines:
+        for commit, file_lines in blame_data:  # type: ignore[misc, union-attr]
+            for raw_line in file_lines:  # type: ignore[union-attr]
                 content = (
                     raw_line.decode("utf-8", errors="replace")
                     if isinstance(raw_line, bytes)
-                    else raw_line
+                    else str(raw_line)
                 )
                 blame_lines.append(
                     BlameLine(
                         line_number=line_number,
                         content=content.rstrip("\n"),
-                        author=commit.author.name,
-                        commit_hash=commit.hexsha[:8],
+                        author=str(commit.author.name),  # type: ignore[union-attr]
+                        commit_hash=str(commit.hexsha)[:8],  # type: ignore[union-attr]
                         commit_date=datetime.fromtimestamp(
-                            commit.authored_date, tz=timezone.utc
+                            int(commit.authored_date), tz=timezone.utc  # type: ignore[union-attr]
                         ),
-                        commit_message=commit.message.split("\n")[0],
+                        commit_message=str(commit.message).split("\n")[0],  # type: ignore[union-attr]
                     )
                 )
                 line_number += 1

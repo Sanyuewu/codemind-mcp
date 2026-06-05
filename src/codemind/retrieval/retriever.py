@@ -9,6 +9,8 @@ import structlog
 from codemind.config import Settings
 from codemind.exceptions import RetrievalError
 from codemind.indexing.embedder import Embedder
+from typing import Literal
+
 from codemind.models import CodeChunk, Reference, RetrievedChunk, SearchQuery
 from codemind.retrieval.dense import DenseRetriever
 from codemind.retrieval.hybrid import reciprocal_rank_fusion
@@ -79,6 +81,7 @@ class Retriever:
                 )
             ))
         if self._settings.enable_dense:
+            assert self._dense is not None
             tasks.append(asyncio.create_task(
                 self._dense.search(
                     query.query,
@@ -99,6 +102,7 @@ class Retriever:
         only_bm25 = self._settings.enable_bm25 and not self._settings.enable_dense
         only_dense = self._settings.enable_dense and not self._settings.enable_bm25
 
+        retrieval_method: Literal["bm25", "dense", "hybrid", "rerank"]
         if only_bm25:
             raw_candidates = bm25_results[: self._settings.rerank_input_top_k]
             retrieval_method = "bm25"

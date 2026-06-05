@@ -130,7 +130,7 @@ async def main() -> None:
     global _retriever, _metadata_store, _settings
 
     try:
-        settings = Settings()
+        settings = Settings()  # type: ignore[call-arg]  # repo_path read from CODEMIND_REPO_PATH env var
     except Exception as e:
         raise ConfigError(f"Failed to load settings: {e}") from e
 

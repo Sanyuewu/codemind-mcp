@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import warnings
 from pathlib import Path
+from typing import Literal, cast
 
 import structlog
 from tree_sitter import Tree
@@ -19,7 +20,7 @@ _EXTENSION_TO_LANGUAGE: dict[str, str] = {
 }
 
 
-def get_language(path: Path) -> str:
+def get_language(path: Path) -> Literal["python", "typescript", "java", "go"]:
     """Return the tree-sitter language name for a file path.
 
     Raises ParserError for unsupported extensions.
@@ -29,7 +30,7 @@ def get_language(path: Path) -> str:
         raise ParserError(
             f"Unsupported file extension: {suffix!r} (path: {path})"
         )
-    return _EXTENSION_TO_LANGUAGE[suffix]
+    return cast(Literal["python", "typescript", "java", "go"], _EXTENSION_TO_LANGUAGE[suffix])
 
 
 def parse_file(path: Path) -> Tree:

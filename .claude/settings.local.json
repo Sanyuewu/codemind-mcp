@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd E:\\\\DPJ\\\\MCP\\\\codemind-mcp *)",
+      "Bash(uv run *)",
+      "Bash(uv add *)",
+      "Bash(Get-ChildItem -Path \"E:\\\\DPJ\\\\MCP\\\\codemind-mcp\" -Recurse -File)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(Get-ChildItem -Recurse -Path E:\\\\DPJ\\\\MCP\\\\codemind-mcp -Include *.py -Force)",
+      "Bash(CODEMIND_REPO_PATH=. uv run *)",
+      "Bash(Get-ChildItem -Recurse -Name)",
+      "Bash(tasklist /fi \"IMAGENAME eq python.exe\")",
+      "Bash(tasklist /fi \"IMAGENAME eq python3.exe\")",
+      "Bash(Get-ChildItem -Path \"E:\\\\DPJ\\\\MCP\\\\codemind-mcp\" -Recurse -Directory)"
+    ]
+  }
+}

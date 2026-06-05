@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING, Any, Callable, Literal, cast
 
 from codemind.exceptions import ParserError
 from codemind.indexing.parser import get_language, parse_file
@@ -21,8 +21,8 @@ class LanguageConfig:
     method_types: frozenset[str]        # methods inside class body
     constructor_types: frozenset[str]   # constructors inside class body
     comment_types: frozenset[str]
-    unwrap_fn: Callable[[object], object | None]
-    class_name_fn: Callable[[object, bytes], str]
+    unwrap_fn: Callable[[Any], Any]
+    class_name_fn: Callable[[Any, bytes], str]
     has_docstrings: bool = False
 
 
@@ -160,8 +160,8 @@ def _extract_function_chunk(
     leading: "list[Node]",
     source: bytes,
     file_path: str,
-    language: str,
-    chunk_type: str,
+    language: Literal["python", "typescript", "java", "go"],
+    chunk_type: Literal["function", "class", "method", "module"],
     parent_name: str | None,
     config: LanguageConfig,
 ) -> CodeChunk:
@@ -205,7 +205,7 @@ def _extract_class_chunks(
     leading: "list[Node]",
     source: bytes,
     file_path: str,
-    language: str,
+    language: Literal["python", "typescript", "java", "go"],
     config: LanguageConfig,
 ) -> list[CodeChunk]:
     class_name = config.class_name_fn(class_node, source)
@@ -243,9 +243,10 @@ def _extract_class_chunks(
 
     if body:
         for child in body.named_children:
-            inner = config.unwrap_fn(child)
-            if inner is None:
+            _inner = config.unwrap_fn(child)
+            if _inner is None:
                 continue
+            inner = cast("Node", _inner)
             if inner.type not in config.method_types and inner.type not in config.constructor_types:
                 continue
             method_leading = _collect_leading_comments(child, config.comment_types)
@@ -337,11 +338,12 @@ def chunk_file(path: Path, rel_path: str | None = None) -> list[CodeChunk]:
     chunks: list[CodeChunk] = []
 
     for child in tree.root_node.named_children:
-        actual = config.unwrap_fn(child)
+        _actual = config.unwrap_fn(child)
 
-        if actual is None:
+        if _actual is None:
             continue
 
+        actual = cast("Node", _actual)
         leading = _collect_leading_comments(child, config.comment_types)
         claimed_comment_ids |= {n.id for n in leading}
 

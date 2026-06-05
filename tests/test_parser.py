@@ -33,8 +33,10 @@ def test_parse_unsupported_ext_raises():
         parse_file(Path("foo.xyz"))
 
 
-def test_parse_broken_python_raises(tmp_path: Path):
+def test_parse_broken_python_warns_not_raises(tmp_path: Path):
+    # Day 11 fix: tree-sitter 1.10.2 has_error on Annotated[...,] syntax is
+    # downgraded from ParserError to a warning so broken files still return a tree.
     broken = tmp_path / "broken.py"
     broken.write_text("def foo(\n  # unclosed paren\nclass Bar:\n    pass", encoding="utf-8")
-    with pytest.raises(ParserError, match="Syntax errors"):
-        parse_file(broken)
+    tree = parse_file(broken)
+    assert tree.root_node.has_error

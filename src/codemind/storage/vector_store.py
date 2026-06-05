@@ -62,6 +62,7 @@ class VectorStore:
         embeddings: list[list[float]],
     ) -> None:
         await self._ensure_collection()
+        assert self._client is not None
         points = [
             PointStruct(
                 id=int(chunk.chunk_id, 16),
@@ -89,6 +90,7 @@ class VectorStore:
         filters: dict | None = None,
     ) -> list[tuple[str, float]]:
         await self._ensure_collection()
+        assert self._client is not None
         qdrant_filter: Filter | None = None
         if filters:
             qdrant_filter = Filter(
@@ -105,12 +107,17 @@ class VectorStore:
                 limit=top_k,
                 with_payload=True,
             )
-            return [(hit.payload["chunk_id"], hit.score) for hit in result.points]
+            return [
+                (hit.payload["chunk_id"], hit.score)  # type: ignore[index]
+                for hit in result.points
+                if hit.payload
+            ]
         except Exception as e:
             raise StorageError(f"Qdrant search failed: {e}") from e
 
     async def delete_by_file(self, file_path: str) -> int:
         await self._ensure_collection()
+        assert self._client is not None
         try:
             scroll_filter = Filter(
                 must=[FieldCondition(key="file_path", match=MatchValue(value=file_path))]
