@@ -14,3 +14,9 @@ wheels/
 
 # CodeMind index data
 .codemind/
+
+# Claude Code local settings
+.claude/
+
+# Test coverage artifacts
+.coverage
