@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     enable_reranker: bool = Field(default=True)
 
     # ── 检索参数 ──────────────────────────────
+    enable_bm25: bool = Field(default=True, description="关闭则跳过 BM25 检索路径")
+    enable_dense: bool = Field(default=True, description="关闭则跳过 Dense 检索路径及嵌入模型加载")
     bm25_top_k: int = Field(default=20)
     dense_top_k: int = Field(default=20)
     rrf_k: int = Field(default=60, description="RRF 公式中的 k 参数")

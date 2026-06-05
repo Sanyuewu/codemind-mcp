@@ -1,0 +1,737 @@
+{
+  "timestamp": "20260605_084028",
+  "config": "bm25",
+  "repo_path": "E:\\DPJ\\repos\\fastapi",
+  "overall": {
+    "R@1": 0.14,
+    "R@3": 0.18,
+    "R@5": 0.3,
+    "MRR": 0.187,
+    "n": 50
+  },
+  "by_intent": {
+    "locate": {
+      "R@1": 0.1,
+      "R@3": 0.15,
+      "R@5": 0.25,
+      "MRR": 0.145,
+      "n": 20
+    },
+    "understand": {
+      "R@1": 0.2,
+      "R@3": 0.25,
+      "R@5": 0.35,
+      "MRR": 0.25,
+      "n": 20
+    },
+    "compare": {
+      "R@1": 0.1,
+      "R@3": 0.1,
+      "R@5": 0.3,
+      "MRR": 0.145,
+      "n": 10
+    }
+  },
+  "per_item": [
+    {
+      "id": "q001",
+      "intent_type": "locate",
+      "question": "Where is the jsonable_encoder function implemented in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "7d23b5f049651402",
+        "82d62d1fc9e61deb",
+        "aee3171809fdb723"
+      ]
+    },
+    {
+      "id": "q002",
+      "intent_type": "locate",
+      "question": "Where is the request_response function defined in FastAPI's routing module?",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "7b5797b744b4e110",
+        "7d23b5f049651402",
+        "82d62d1fc9e61deb"
+      ]
+    },
+    {
+      "id": "q003",
+      "intent_type": "locate",
+      "question": "Where is the websocket_session function defined in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 1.0,
+      "mrr": 0.2,
+      "retrieved_top3": [
+        "7d23b5f049651402",
+        "82d62d1fc9e61deb",
+        "aee3171809fdb723"
+      ]
+    },
+    {
+      "id": "q004",
+      "intent_type": "locate",
+      "question": "Where is get_request_handler implemented in the FastAPI routing module?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "33f81022b63c901e",
+        "768ab16cc2921e2f",
+        "219db60318fce313"
+      ]
+    },
+    {
+      "id": "q005",
+      "intent_type": "locate",
+      "question": "Where is the APIWebSocketRoute class defined in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "97619da46f6cc580",
+        "f7030d1c9f231d1b",
+        "1276fb543360c29d"
+      ]
+    },
+    {
+      "id": "q006",
+      "intent_type": "locate",
+      "question": "Where is the APIRoute class defined in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "97619da46f6cc580",
+        "f7030d1c9f231d1b",
+        "1276fb543360c29d"
+      ]
+    },
+    {
+      "id": "q007",
+      "intent_type": "locate",
+      "question": "Where is the APIRouter class implemented in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "4474f1793c5341e8",
+        "33f81022b63c901e",
+        "768ab16cc2921e2f"
+      ]
+    },
+    {
+      "id": "q008",
+      "intent_type": "locate",
+      "question": "Where is the FastAPI application class defined?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "f7030d1c9f231d1b",
+        "1276fb543360c29d",
+        "97619da46f6cc580"
+      ]
+    },
+    {
+      "id": "q009",
+      "intent_type": "locate",
+      "question": "Where is http_exception_handler implemented in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "33f81022b63c901e",
+        "768ab16cc2921e2f",
+        "8f141e43685e279a"
+      ]
+    },
+    {
+      "id": "q010",
+      "intent_type": "locate",
+      "question": "Where is request_validation_exception_handler defined in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 1.0,
+      "mrr": 0.2,
+      "retrieved_top3": [
+        "33f81022b63c901e",
+        "768ab16cc2921e2f",
+        "2f15114ee157ab0d"
+      ]
+    },
+    {
+      "id": "q011",
+      "intent_type": "locate",
+      "question": "Where is websocket_request_validation_exception_handler defined in FastAPI?",
+      "r1": 0.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 0.5,
+      "retrieved_top3": [
+        "eff601fa7c0ba560",
+        "a29bd7b7e3d0d4f7",
+        "33f81022b63c901e"
+      ]
+    },
+    {
+      "id": "q012",
+      "intent_type": "locate",
+      "question": "Where is BackgroundTasks.add_task implemented in FastAPI?",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "82d62d1fc9e61deb",
+        "aee3171809fdb723",
+        "33f81022b63c901e"
+      ]
+    },
+    {
+      "id": "q013",
+      "intent_type": "locate",
+      "question": "Where is the UploadFile class defined in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "97619da46f6cc580",
+        "f7030d1c9f231d1b",
+        "1276fb543360c29d"
+      ]
+    },
+    {
+      "id": "q014",
+      "intent_type": "locate",
+      "question": "Where is OAuth2PasswordRequestForm.__init__ implemented?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "33f81022b63c901e",
+        "768ab16cc2921e2f",
+        "f7030d1c9f231d1b"
+      ]
+    },
+    {
+      "id": "q015",
+      "intent_type": "locate",
+      "question": "Where is the OAuth2PasswordBearer class defined in FastAPI security?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "97619da46f6cc580",
+        "f7030d1c9f231d1b",
+        "859bdcc42ca78065"
+      ]
+    },
+    {
+      "id": "q016",
+      "intent_type": "locate",
+      "question": "Where is OAuth2AuthorizationCodeBearer.__call__ implemented in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "33f81022b63c901e",
+        "768ab16cc2921e2f",
+        "9de3e5f70a21d1e0"
+      ]
+    },
+    {
+      "id": "q017",
+      "intent_type": "locate",
+      "question": "Where is the base OAuth2.__call__ method defined in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "474f544a6ab88ed6",
+        "fea9a2bbc5608272",
+        "97619da46f6cc580"
+      ]
+    },
+    {
+      "id": "q018",
+      "intent_type": "locate",
+      "question": "Where is APIKeyHeader.__call__ implemented in FastAPI?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "33f81022b63c901e",
+        "768ab16cc2921e2f",
+        "9de3e5f70a21d1e0"
+      ]
+    },
+    {
+      "id": "q019",
+      "intent_type": "locate",
+      "question": "Where is the get_dependant function defined in FastAPI's dependency system?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "7d23b5f049651402",
+        "859bdcc42ca78065",
+        "38fa8203221d2048"
+      ]
+    },
+    {
+      "id": "q020",
+      "intent_type": "locate",
+      "question": "Where is the get_openapi function implemented for OpenAPI schema generation?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "818405687f41cc7e",
+        "2efd7f7f8b2d0358",
+        "2e5b1d4de4d6d63c"
+      ]
+    },
+    {
+      "id": "q021",
+      "intent_type": "understand",
+      "question": "How does FastAPI handle background tasks that should run after the HTTP response",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "aee3171809fdb723",
+        "82d62d1fc9e61deb",
+        "c92a767c6ff6a418"
+      ]
+    },
+    {
+      "id": "q022",
+      "intent_type": "understand",
+      "question": "How does OAuth2PasswordBearer authenticate and extract Bearer tokens from incomi",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "7a86d2bd6f01114d",
+        "150299f31ea2d1e8",
+        "bb2e6b84933fe2ac"
+      ]
+    },
+    {
+      "id": "q023",
+      "intent_type": "understand",
+      "question": "How does FastAPI generate its OpenAPI schema from route definitions?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "0ea04bc0f08a5d3b",
+        "ac90af32919a1140",
+        "b7bca30f6d84080a"
+      ]
+    },
+    {
+      "id": "q024",
+      "intent_type": "understand",
+      "question": "How does get_dependant analyze a function's parameters to build a dependency gra",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "7d23b5f049651402",
+        "08624267e221e90b",
+        "adf6af1900022b3c"
+      ]
+    },
+    {
+      "id": "q025",
+      "intent_type": "understand",
+      "question": "How does solve_dependencies resolve and inject dependency values into endpoint f",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 1.0,
+      "mrr": 0.25,
+      "retrieved_top3": [
+        "eb460e17508b28cf",
+        "4368c1dfbb4f3f8a",
+        "da4ffc8129f759ee"
+      ]
+    },
+    {
+      "id": "q026",
+      "intent_type": "understand",
+      "question": "How does APIRoute match incoming HTTP requests and dispatch them to handler func",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "a150625bd12237b5",
+        "072e71ac126ee771",
+        "eb460e17508b28cf"
+      ]
+    },
+    {
+      "id": "q027",
+      "intent_type": "understand",
+      "question": "How does FastAPI handle RequestValidationError and what response does it return ",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "87ff2656952e80f4",
+        "a02b341f9f3e8f7c",
+        "1c015c78827dde2b"
+      ]
+    },
+    {
+      "id": "q028",
+      "intent_type": "understand",
+      "question": "How does jsonable_encoder convert non-JSON-serializable Python objects for HTTP ",
+      "r1": 0.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 0.5,
+      "retrieved_top3": [
+        "2411e6e8652f046e",
+        "50fb082a0a1c3def",
+        "87ff2656952e80f4"
+      ]
+    },
+    {
+      "id": "q029",
+      "intent_type": "understand",
+      "question": "How does get_request_handler create an ASGI-compatible callable that wraps a rou",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "97cdefd9bd1a8e33",
+        "28655f2c1a4e001c",
+        "453040b1a0670974"
+      ]
+    },
+    {
+      "id": "q030",
+      "intent_type": "understand",
+      "question": "How does OAuth2AuthorizationCodeBearer.__call__ validate authorization codes in ",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 1.0,
+      "mrr": 0.25,
+      "retrieved_top3": [
+        "059a9f8bc5380084",
+        "ebcc05bef0a68409",
+        "27cbc107851dabcb"
+      ]
+    },
+    {
+      "id": "q031",
+      "intent_type": "understand",
+      "question": "How does UploadFile extend Starlette's file upload handling for FastAPI endpoint",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "b891d0ccc01dddf3",
+        "f7a38450d6a26707",
+        "04c6f4d7f5abfca6"
+      ]
+    },
+    {
+      "id": "q032",
+      "intent_type": "understand",
+      "question": "How does get_swagger_ui_html generate the HTML page that renders the Swagger UI?",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "87ff2656952e80f4",
+        "b061edaef9776225",
+        "d396ce584a12db16"
+      ]
+    },
+    {
+      "id": "q033",
+      "intent_type": "understand",
+      "question": "How does the base OAuth2.__call__ method handle authentication and raise HTTPExc",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "fbcd09200fbee78f",
+        "c35128d41e4c9325",
+        "56507850329f6a5c"
+      ]
+    },
+    {
+      "id": "q034",
+      "intent_type": "understand",
+      "question": "How does OAuth2PasswordRequestForm collect username and password from HTML form ",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "8aa0a1f5aae25c5c",
+        "542942d92f79ec17",
+        "2705741282e5c2d9"
+      ]
+    },
+    {
+      "id": "q035",
+      "intent_type": "understand",
+      "question": "How does APIKeyQuery.__call__ extract API keys from URL query parameters?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "e7eff600947c224b",
+        "b11343985242c6e3",
+        "6a0a6c57a4e28e05"
+      ]
+    },
+    {
+      "id": "q036",
+      "intent_type": "understand",
+      "question": "How does websocket_session handle the lifecycle of a WebSocket connection in Fas",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "3b3f5643e0d49982",
+        "021502bf1c97304c",
+        "8377600b89ce4798"
+      ]
+    },
+    {
+      "id": "q037",
+      "intent_type": "understand",
+      "question": "How does request_response wrap an async endpoint function as a Starlette-compati",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "7b5797b744b4e110",
+        "453040b1a0670974",
+        "a2f90b4277214985"
+      ]
+    },
+    {
+      "id": "q038",
+      "intent_type": "understand",
+      "question": "How does SecurityScopes declare and carry OAuth2 scope requirements for dependen",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "859bdcc42ca78065",
+        "318b10bcc856d14b",
+        "8aa0a1f5aae25c5c"
+      ]
+    },
+    {
+      "id": "q039",
+      "intent_type": "understand",
+      "question": "How does APIKeyCookie.__call__ extract API keys from HTTP cookie headers?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "b00b3f09e72e115b",
+        "673521b1b80b4a87",
+        "16b512cf1a7e2edc"
+      ]
+    },
+    {
+      "id": "q040",
+      "intent_type": "understand",
+      "question": "How does get_authorization_scheme_param parse the Authorization header to extrac",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "882aa09735d65c15",
+        "27cbc107851dabcb",
+        "f0170bf14bdb3d77"
+      ]
+    },
+    {
+      "id": "q041",
+      "intent_type": "compare",
+      "question": "What is the difference between OAuth2PasswordBearer and APIKeyHeader authenticat",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 1.0,
+      "mrr": 0.2,
+      "retrieved_top3": [
+        "75f4558a471a78a3",
+        "336901bec3d579f7",
+        "1d420cb704afac06"
+      ]
+    },
+    {
+      "id": "q042",
+      "intent_type": "compare",
+      "question": "How do APIKeyQuery and APIKeyHeader differ in extracting API keys from HTTP requ",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "150299f31ea2d1e8",
+        "bb2e6b84933fe2ac",
+        "ae9a918766215a86"
+      ]
+    },
+    {
+      "id": "q043",
+      "intent_type": "compare",
+      "question": "What is the difference between OAuth2PasswordBearer and OAuth2AuthorizationCodeB",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "542942d92f79ec17",
+        "859bdcc42ca78065",
+        "3cffa9fbd513c16d"
+      ]
+    },
+    {
+      "id": "q044",
+      "intent_type": "compare",
+      "question": "How does http_exception_handler differ from request_validation_exception_handler",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "3001f382b13ca838",
+        "a18e772b67918c4d",
+        "c2cd9d03c5040c23"
+      ]
+    },
+    {
+      "id": "q045",
+      "intent_type": "compare",
+      "question": "What is the difference between APIRoute and APIWebSocketRoute in FastAPI's routi",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "542942d92f79ec17",
+        "dd22dd6bd15483e0",
+        "e2dad9f35642fd69"
+      ]
+    },
+    {
+      "id": "q046",
+      "intent_type": "compare",
+      "question": "How does get_request_handler differ from request_response in wrapping endpoint c",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "806f266c0230e401",
+        "ede18da16a9266fc",
+        "fd7391a1a003866f"
+      ]
+    },
+    {
+      "id": "q047",
+      "intent_type": "compare",
+      "question": "What is the difference between OAuth2PasswordRequestForm and OAuth2PasswordReque",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "542942d92f79ec17",
+        "316293ad553e2899",
+        "859bdcc42ca78065"
+      ]
+    },
+    {
+      "id": "q048",
+      "intent_type": "compare",
+      "question": "How do get_swagger_ui_html and get_redoc_html differ in generating API documenta",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 1.0,
+      "mrr": 0.25,
+      "retrieved_top3": [
+        "21cb179e42920737",
+        "598ab9d2bf8118dc",
+        "497b3db96f765a70"
+      ]
+    },
+    {
+      "id": "q049",
+      "intent_type": "compare",
+      "question": "What is the difference between OAuth2PasswordBearer.__call__ and APIKeyHeader.__",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "963b130c871ade4a",
+        "fbcd09200fbee78f",
+        "5146d2202edcf01d"
+      ]
+    },
+    {
+      "id": "q050",
+      "intent_type": "compare",
+      "question": "How does the base OAuth2.__call__ differ from OAuth2PasswordBearer.__call__ in t",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "9de3e5f70a21d1e0",
+        "c6e4b48d9e2b02b3",
+        "23364d1630901acc"
+      ]
+    }
+  ]
+}

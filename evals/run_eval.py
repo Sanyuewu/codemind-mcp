@@ -58,11 +58,49 @@ def _aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+async def _coverage_hit(
+    gold_passages: list[dict[str, Any]],
+    retrieved_ids: list[str],
+    metadata_store: Any,
+) -> tuple[float, float, float, float]:
+    """Return (r1, r3, r5, mrr) using range-based coverage matching."""
+    chunks_raw = await asyncio.gather(
+        *[metadata_store.get_chunk(cid) for cid in retrieved_ids]
+    )
+    retrieved_chunks = [c for c in chunks_raw if c is not None]
+
+    def _hit(k: int) -> bool:
+        for gp in gold_passages:
+            gfp = gp["file_path"]
+            gsl = gp["start_line"]
+            for chunk in retrieved_chunks[:k]:
+                if (
+                    chunk.file_path == gfp
+                    and chunk.start_line <= gsl <= chunk.end_line
+                ):
+                    return True
+        return False
+
+    def _rank() -> float:
+        for rank, chunk in enumerate(retrieved_chunks, start=1):
+            for gp in gold_passages:
+                if (
+                    chunk.file_path == gp["file_path"]
+                    and chunk.start_line <= gp["start_line"] <= chunk.end_line
+                ):
+                    return 1.0 / rank
+        return 0.0
+
+    return float(_hit(1)), float(_hit(3)), float(_hit(5)), _rank()
+
+
 async def _run(
     repo_path: Path,
     eval_set_path: Path,
     config_path: Path | None,
     top_k: int,
+    data_dir: Path | None = None,
+    match_mode: str = "exact",
 ) -> None:
     import structlog
 
@@ -86,8 +124,8 @@ async def _run(
     from codemind.retrieval.retriever import Retriever
     from codemind.storage.metadata_store import MetadataStore
 
-    data_dir = repo_path / ".codemind"
-    settings = Settings(repo_path=repo_path, data_dir=data_dir)
+    effective_data_dir = data_dir if data_dir is not None else repo_path / ".codemind"
+    settings = Settings(repo_path=repo_path, data_dir=effective_data_dir)
 
     metadata_store = MetadataStore(settings)
     retriever = Retriever(metadata_store, settings)
@@ -116,14 +154,24 @@ async def _run(
             typer.echo(f"  ERROR [{item['id']}]: {exc}", err=True)
             retrieved_ids = []
 
+        if match_mode == "coverage":
+            r1, r3, r5, mrr = await _coverage_hit(
+                item["gold_passages"], retrieved_ids, metadata_store
+            )
+        else:
+            r1 = _recall_at_k(gold_ids, retrieved_ids, 1)
+            r3 = _recall_at_k(gold_ids, retrieved_ids, 3)
+            r5 = _recall_at_k(gold_ids, retrieved_ids, 5)
+            mrr = _mrr(gold_ids, retrieved_ids)
+
         row: dict[str, Any] = {
             "id": item["id"],
             "intent_type": item["intent_type"],
             "question": item["question"][:80],
-            "r1": _recall_at_k(gold_ids, retrieved_ids, 1),
-            "r3": _recall_at_k(gold_ids, retrieved_ids, 3),
-            "r5": _recall_at_k(gold_ids, retrieved_ids, 5),
-            "mrr": _mrr(gold_ids, retrieved_ids),
+            "r1": r1,
+            "r3": r3,
+            "r5": r5,
+            "mrr": mrr,
             "retrieved_top3": retrieved_ids[:3],
         }
         per_item.append(row)
@@ -198,8 +246,18 @@ def main(
         "--top-k",
         help="Maximum number of results to retrieve per query",
     ),
+    data_dir: Path | None = typer.Option(
+        None,
+        "--data-dir",
+        help="Override data directory (default: <repo-path>/.codemind). Use for ablation with alternative indexes.",
+    ),
+    match_mode: str = typer.Option(
+        "exact",
+        "--match-mode",
+        help="exact: chunk_id match; coverage: gold start_line in retrieved chunk range",
+    ),
 ) -> None:
-    asyncio.run(_run(repo_path, eval_set, config, top_k))
+    asyncio.run(_run(repo_path, eval_set, config, top_k, data_dir, match_mode))
 
 
 if __name__ == "__main__":
