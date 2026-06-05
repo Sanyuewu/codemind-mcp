@@ -32,6 +32,17 @@ class Settings(BaseSettings):
     dense_top_k: int = Field(default=20)
     rrf_k: int = Field(default=60, description="RRF 公式中的 k 参数")
     rerank_input_top_k: int = Field(default=10, description="送入 reranker 的候选数")
+    test_doc_patterns: list[str] = Field(
+        default=[
+            "**/tests/**", "**/test_*", "**/*_test.*",
+            "**/docs_src/**", "**/examples/**", "**/fixtures/**",
+        ],
+        description="匹配这些 pattern 的文件视为 test/doc，不参与 source_boost",
+    )
+    source_boost_factor: float = Field(
+        default=1.5,
+        description="source 文件（不匹配 test_doc_patterns）的 RRF 分数乘以该系数",
+    )
 
     # ── 索引 ──────────────────────────────────
     supported_languages: list[str] = Field(

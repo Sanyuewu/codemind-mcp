@@ -100,6 +100,17 @@ class Indexer:
             if lang in self._config.supported_languages
         }
 
+        # Load .codemindignore patterns (same glob syntax as exclude_patterns)
+        codemindignore_patterns: list[str] = []
+        _ignore_file = repo_path / ".codemindignore"
+        if _ignore_file.exists():
+            codemindignore_patterns = [
+                line.strip()
+                for line in _ignore_file.read_text(encoding="utf-8").splitlines()
+                if line.strip() and not line.strip().startswith("#")
+            ]
+            log.info("indexing.codemindignore_loaded", pattern_count=len(codemindignore_patterns))
+
         try:
             proc = await asyncio.to_thread(
                 subprocess.run,
@@ -125,6 +136,10 @@ class Indexer:
                 continue
             rel = path.relative_to(repo_path).as_posix()
             if any(PurePosixPath(rel).match(pat) for pat in self._config.exclude_patterns):
+                continue
+            if codemindignore_patterns and any(
+                PurePosixPath(rel).match(pat) for pat in codemindignore_patterns
+            ):
                 continue
             if path.stat().st_size / 1024 > self._config.max_file_size_kb:
                 continue

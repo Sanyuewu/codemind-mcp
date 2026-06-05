@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import re
 import time
+from pathlib import PurePosixPath
 
 import structlog
 
@@ -125,6 +126,18 @@ class Retriever:
             *[self._metadata_store.get_chunk(cid) for cid in chunk_ids]
         )
         chunks = [c for c in chunks_raw if c is not None]
+
+        # Boost source-file scores: files not matching any test/doc pattern get multiplied
+        if self._settings.source_boost_factor != 1.0:
+            for chunk in chunks:
+                if not any(
+                    PurePosixPath(chunk.file_path).match(pat)
+                    for pat in self._settings.test_doc_patterns
+                ):
+                    score_map[chunk.chunk_id] = (
+                        score_map.get(chunk.chunk_id, 0.0)
+                        * self._settings.source_boost_factor
+                    )
 
         if query.chunk_types:
             chunks = [c for c in chunks if c.chunk_type in query.chunk_types]
