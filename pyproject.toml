@@ -8,7 +8,7 @@ packages = ["src/codemind"]
 [project]
 name = "codemind-mcp"
 version = "0.1.0"
-description = "Add your description here"
+description = "Local MCP server for semantic code search over private repositories (BM25 + BGE-M3 + reranker)"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

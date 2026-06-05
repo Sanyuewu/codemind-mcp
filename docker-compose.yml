@@ -1,0 +1,30 @@
+services:
+  # Run once to build the search index for your repository.
+  # Usage: REPO_PATH=/path/to/your/repo docker compose run --rm index
+  index:
+    build: .
+    volumes:
+      - ${REPO_PATH:?REPO_PATH is required (e.g. export REPO_PATH=/path/to/repo)}:/repo:ro
+      - codemind_data:/data
+    environment:
+      - CODEMIND_REPO_PATH=/repo
+      - CODEMIND_DATA_DIR=/data
+      - CODEMIND_LOG_FORMAT=console
+    entrypoint: ["uv", "run", "codemind", "index", "/repo"]
+
+  # MCP Server (stdio).
+  # Claude Desktop uses `docker run --rm -i` instead of docker-compose for this service.
+  # See README.md "Connect to Claude Desktop" for the config snippet.
+  server:
+    build: .
+    volumes:
+      - ${REPO_PATH:?REPO_PATH is required}:/repo:ro
+      - codemind_data:/data
+    environment:
+      - CODEMIND_REPO_PATH=/repo
+      - CODEMIND_DATA_DIR=/data
+      - CODEMIND_LOG_FORMAT=json
+    stdin_open: true
+
+volumes:
+  codemind_data:
