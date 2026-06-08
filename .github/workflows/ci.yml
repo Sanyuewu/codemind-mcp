@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: uv sync --all-groups
+
+      # Cache HuggingFace models (~2 GB: BGE-M3 + BGE-reranker-v2-m3).
+      # Key includes a manual version so it can be bumped if models change.
+      - name: Cache HuggingFace models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-models-v1-${{ runner.os }}
+
+      - name: Type check (mypy)
+        run: uv run mypy src/
+
+      - name: Unit & integration tests
+        run: uv run pytest tests/ -q --tb=short
+        env:
+          CODEMIND_REPO_PATH: "."

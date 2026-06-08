@@ -9,6 +9,7 @@ MCP-compatible client). Your code never leaves your machine.
 ![Python ≥3.12](https://img.shields.io/badge/python-%E2%89%A53.12-blue)
 ![License MIT](https://img.shields.io/badge/license-MIT-green)
 ![MCP](https://img.shields.io/badge/protocol-MCP-purple)
+[![CI](https://github.com/Sanyuewu/codemind-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Sanyuewu/codemind-mcp/actions/workflows/ci.yml)
 
 ---
 
