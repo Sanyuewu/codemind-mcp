@@ -37,6 +37,7 @@ MCP-compatible client). Your code never leaves your machine.
 
 - **Hybrid retrieval** — BM25 (keyword) + BGE-M3 (semantic) fused with Reciprocal Rank Fusion
 - **Cross-encoder reranking** — BGE-reranker-v2-m3 re-scores top candidates for precision
+- **Intent-aware routing** — locate queries ("where is X defined") automatically get a wider candidate pool; semantic queries keep tight precision
 - **AST-aware chunking** — tree-sitter extracts function/class/method boundaries; no arbitrary line splits
 - **Five specialized tools** — `semantic_search`, `get_function_by_name`, `find_references`, `list_files`, `get_git_blame`
 - **Incremental indexing** — re-indexes only changed files; content-hash based
@@ -56,7 +57,7 @@ MCP-compatible client). Your code never leaves your machine.
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/codemind-mcp.git
+git clone https://github.com/Sanyuewu/codemind-mcp.git
 cd codemind-mcp
 uv sync
 ```
@@ -130,16 +131,19 @@ Restart Claude Desktop. You should see **CodeMind MCP** listed in the tools pane
 
 ## Evaluation Results
 
-Tested on a 50-question eval set targeting the FastAPI codebase (1 119 files, 5 842 chunks).
+Tested on a 50-question eval set targeting the FastAPI codebase (1 119 files, 7 182 chunks), three intent categories: locate / understand / compare.
 
-**Retrieval mode comparison** (Hybrid+Rerank is the production default):
+**Retrieval mode ablation** (Hybrid+Rerank with intent-aware routing is the production default):
 
 | Config | R@1 | R@3 | R@5 | MRR |
 |--------|-----|-----|-----|-----|
 | BM25-only | 0.140 | 0.180 | 0.300 | 0.187 |
-| Dense-only | 0.160 | 0.280 | 0.360 | 0.230 |
+| Dense-only | 0.180 | 0.300 | 0.400 | 0.255 |
 | Hybrid | 0.180 | 0.380 | 0.460 | 0.276 |
-| **Hybrid+Rerank** | **0.240** | **0.400** | **0.560** | **0.350** |
+| Hybrid+Rerank | 0.240 | 0.400 | 0.560 | 0.350 |
+| **Hybrid+Rerank + Intent Routing** | **0.260** | **0.420** | **0.600** | **0.373** |
+
+Intent routing routes locate-type queries to a larger reranker candidate pool, improving locate R@5 from 0.45 → 0.55 with no regression on understand (0.60) or compare (0.70).
 
 Full ablation report (chunking strategy, retrieval modes, tool design): [`docs/eval-report.md`](docs/eval-report.md)
 

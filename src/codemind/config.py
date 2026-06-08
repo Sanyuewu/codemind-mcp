@@ -38,8 +38,12 @@ class Settings(BaseSettings):
     )
     test_doc_patterns: list[str] = Field(
         default=[
+            # nested paths (e.g. packages that have their own tests/)
             "**/tests/**", "**/test_*", "**/*_test.*",
             "**/docs_src/**", "**/examples/**", "**/fixtures/**",
+            # root-level paths: PurePosixPath.match("**/X/**") does not match
+            # paths that START with X/ (no leading component), so add explicit forms
+            "tests/**", "docs_src/**", "examples/**", "fixtures/**",
         ],
         description="匹配这些 pattern 的文件视为 test/doc，不参与 source_boost",
     )

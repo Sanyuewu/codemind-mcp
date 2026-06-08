@@ -23,6 +23,20 @@ from codemind.storage.vector_store import VectorStore
 log = structlog.get_logger()
 
 
+def _matches_test_doc_pattern(file_path: str, pat: str) -> bool:
+    """PurePosixPath.match() does right-side anchoring and misses root-relative
+    paths deeper than one level (e.g. 'docs_src/a/b.py' vs pattern 'docs_src/**').
+    Fall back to a prefix check for patterns of the form 'DIR/**'."""
+    if PurePosixPath(file_path).match(pat):
+        return True
+    # Handle "DIR/**" patterns where DIR is at the repo root
+    if pat.endswith("/**") and not pat.startswith("*"):
+        prefix = pat[: -len("/**")]
+        if file_path.startswith(prefix + "/"):
+            return True
+    return False
+
+
 def _apply_source_boost(
     results: list[RetrievedChunk],
     settings: Settings,
@@ -32,7 +46,7 @@ def _apply_source_boost(
             chunk=rc.chunk,
             score=rc.score * settings.source_boost_factor
             if not any(
-                PurePosixPath(rc.chunk.file_path).match(pat)
+                _matches_test_doc_pattern(rc.chunk.file_path, pat)
                 for pat in settings.test_doc_patterns
             )
             else rc.score,
