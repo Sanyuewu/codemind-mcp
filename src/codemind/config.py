@@ -32,6 +32,10 @@ class Settings(BaseSettings):
     dense_top_k: int = Field(default=20)
     rrf_k: int = Field(default=60, description="RRF 公式中的 k 参数")
     rerank_input_top_k: int = Field(default=10, description="送入 reranker 的候选数")
+    locate_rerank_input_top_k: int = Field(
+        default=50,
+        description="locate 类查询（where is / defined in 等）送入 reranker 的候选数，大于通用值以提升 source chunk 召回",
+    )
     test_doc_patterns: list[str] = Field(
         default=[
             "**/tests/**", "**/test_*", "**/*_test.*",

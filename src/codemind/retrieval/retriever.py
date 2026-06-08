@@ -45,6 +45,27 @@ def _apply_source_boost(
     return boosted
 
 
+_LOCATE_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
+    re.compile(p, re.IGNORECASE)
+    for p in [
+        r"\bwhere\s+is\b",
+        r"\bwhere\s+are\b",
+        r"\bdefined\b",
+        r"\bimplemented\b",
+        r"\bdefinition\b",
+        r"\bimplementation\b",
+        r"\blocate\b",
+        r"\bfind\s+the\b",
+        r"在哪",
+        r"定义在",
+    ]
+)
+
+
+def _is_locate_query(query: str) -> bool:
+    return any(p.search(query) for p in _LOCATE_PATTERNS)
+
+
 class Retriever:
     def __init__(self, metadata_store: MetadataStore, settings: Settings) -> None:
         self._metadata_store = metadata_store
@@ -125,17 +146,27 @@ class Retriever:
         only_bm25 = self._settings.enable_bm25 and not self._settings.enable_dense
         only_dense = self._settings.enable_dense and not self._settings.enable_bm25
 
+        # Intent-aware routing: locate queries get a larger candidate pool so that
+        # source-file chunks buried beneath docs/tests can reach the reranker.
+        is_locate = _is_locate_query(query.query)
+        rerank_top_k = (
+            self._settings.locate_rerank_input_top_k
+            if is_locate
+            else self._settings.rerank_input_top_k
+        )
+        log.debug("retrieval.intent", is_locate=is_locate, rerank_top_k=rerank_top_k)
+
         retrieval_method: Literal["bm25", "dense", "hybrid", "rerank"]
         if only_bm25:
-            raw_candidates = bm25_results[: self._settings.rerank_input_top_k]
+            raw_candidates = bm25_results[:rerank_top_k]
             retrieval_method = "bm25"
         elif only_dense:
-            raw_candidates = dense_results[: self._settings.rerank_input_top_k]
+            raw_candidates = dense_results[:rerank_top_k]
             retrieval_method = "dense"
         else:
             raw_candidates = reciprocal_rank_fusion(
                 bm25_results, dense_results, self._settings.rrf_k
-            )[: self._settings.rerank_input_top_k]
+            )[:rerank_top_k]
             retrieval_method = "hybrid"
 
         if not raw_candidates:

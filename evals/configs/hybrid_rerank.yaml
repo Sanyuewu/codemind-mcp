@@ -1,8 +1,11 @@
 # Hybrid retrieval with Cross-Encoder reranking (production default)
 # BM25 top-20 + Dense top-20 → RRF → Reranker top-10 → final top-K
+# Intent-aware routing: locate queries use locate_rerank_input_top_k=50,
+# non-locate queries use rerank_input_top_k=10.
+# Timeout raised to 60000ms to accommodate locate queries with top-50 reranking.
 enable_reranker: true
 bm25_top_k: 20
 dense_top_k: 20
 rrf_k: 60
 rerank_input_top_k: 10
-retrieval_timeout_ms: 20000
+retrieval_timeout_ms: 60000
