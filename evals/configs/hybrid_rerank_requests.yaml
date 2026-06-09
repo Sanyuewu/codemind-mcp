@@ -1,0 +1,9 @@
+# Hybrid+Rerank config for psf/requests corpus eval.
+# Timeout raised to 300s: requests has long functions (adapters, cookies, sessions)
+# that make reranker cross-encoder inference much slower than FastAPI chunks.
+enable_reranker: true
+bm25_top_k: 20
+dense_top_k: 20
+rrf_k: 60
+rerank_input_top_k: 10
+retrieval_timeout_ms: 300000

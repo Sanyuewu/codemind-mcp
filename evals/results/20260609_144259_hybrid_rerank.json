@@ -1,0 +1,409 @@
+{
+  "timestamp": "20260609_144259",
+  "config": "hybrid_rerank",
+  "repo_path": "E:\\DPJ\\repos\\requests",
+  "overall": {
+    "R@1": 0.3,
+    "R@3": 0.5,
+    "R@5": 0.5,
+    "MRR": 0.383,
+    "n": 30
+  },
+  "by_intent": {
+    "locate": {
+      "R@1": 0.0,
+      "R@3": 0.0,
+      "R@5": 0.0,
+      "MRR": 0.0,
+      "n": 12
+    },
+    "understand": {
+      "R@1": 0.417,
+      "R@3": 0.833,
+      "R@5": 0.833,
+      "MRR": 0.597,
+      "n": 12
+    },
+    "compare": {
+      "R@1": 0.667,
+      "R@3": 0.833,
+      "R@5": 0.833,
+      "MRR": 0.722,
+      "n": 6
+    }
+  },
+  "per_item": [
+    {
+      "id": "r001",
+      "intent_type": "locate",
+      "question": "Where is the top-level request() function defined in psf/requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r002",
+      "intent_type": "locate",
+      "question": "Where is the get() function defined in requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r003",
+      "intent_type": "locate",
+      "question": "Where is the post() function implemented in requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r004",
+      "intent_type": "locate",
+      "question": "Where is Session.request() defined in the requests library?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r005",
+      "intent_type": "locate",
+      "question": "Where is Session.send() implemented in requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r006",
+      "intent_type": "locate",
+      "question": "Where is resolve_redirects defined in requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r007",
+      "intent_type": "locate",
+      "question": "Where is PreparedRequest.prepare() implemented in the requests models module?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r008",
+      "intent_type": "locate",
+      "question": "Where is PreparedRequest.prepare_body() defined in requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r009",
+      "intent_type": "locate",
+      "question": "Where is the json() method on the Response class defined?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r010",
+      "intent_type": "locate",
+      "question": "Where is Response.raise_for_status() implemented in requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r011",
+      "intent_type": "locate",
+      "question": "Where is HTTPBasicAuth.__call__() defined in requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r012",
+      "intent_type": "locate",
+      "question": "Where is HTTPDigestAuth.__call__() implemented in requests?",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": []
+    },
+    {
+      "id": "r013",
+      "intent_type": "understand",
+      "question": "How does the Session class reuse TCP connections across multiple requests?",
+      "r1": 0.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 0.5,
+      "retrieved_top3": [
+        "1d6504bfd93e1f5f",
+        "faba9dee23b1f543",
+        "3a6676679f001201"
+      ]
+    },
+    {
+      "id": "r014",
+      "intent_type": "understand",
+      "question": "How does Response.content lazily load the full response body in requests?",
+      "r1": 0.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 0.5,
+      "retrieved_top3": [
+        "9a1629b2f79b5357",
+        "6eaa0c97a3d15c37",
+        "f70fe425b17db81a"
+      ]
+    },
+    {
+      "id": "r015",
+      "intent_type": "understand",
+      "question": "How does resolve_redirects decide whether to follow a redirect and construct the",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "0bb0b3f0466c92cb",
+        "cc694b25cae6f941",
+        "4f9efbc1b6dd515f"
+      ]
+    },
+    {
+      "id": "r016",
+      "intent_type": "understand",
+      "question": "How does PreparedRequest.prepare_body handle different body types such as dict, ",
+      "r1": 0.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 0.5,
+      "retrieved_top3": [
+        "fa3c8d218ae9e4e1",
+        "4bfbdaba57320477",
+        "1378d85a75b71a4c"
+      ]
+    },
+    {
+      "id": "r017",
+      "intent_type": "understand",
+      "question": "How does HTTPDigestAuth compute the digest response value from a server challeng",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "66d200053e7bbb43",
+        "a9ea75a7cb338dfb",
+        "15cfce1987700189"
+      ]
+    },
+    {
+      "id": "r018",
+      "intent_type": "understand",
+      "question": "How does Session.request merge environment proxy and SSL settings before sending",
+      "r1": 0.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 0.3333333333333333,
+      "retrieved_top3": [
+        "27b92e8f7f68769b",
+        "2bb25d7913370ba4",
+        "1d6504bfd93e1f5f"
+      ]
+    },
+    {
+      "id": "r019",
+      "intent_type": "understand",
+      "question": "How does rebuild_auth decide whether to strip or re-apply auth credentials durin",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "3871274d5f6c9da0",
+        "f7ade3027700ce7f",
+        "bc937d495381cc00"
+      ]
+    },
+    {
+      "id": "r020",
+      "intent_type": "understand",
+      "question": "How does HTTPAdapter.build_response construct a Response object from an urllib3 ",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "23ac4a6e186360ad",
+        "b2764a4a919a3993",
+        "259bd7b48c60347c"
+      ]
+    },
+    {
+      "id": "r021",
+      "intent_type": "understand",
+      "question": "How does PreparedRequest.prepare_headers normalize and store HTTP headers in a c",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "4bfbdaba57320477",
+        "7b018541ab156a0c",
+        "3a6676679f001201"
+      ]
+    },
+    {
+      "id": "r022",
+      "intent_type": "understand",
+      "question": "How does Session.send handle stream versus non-stream response body reading?",
+      "r1": 0.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 0.3333333333333333,
+      "retrieved_top3": [
+        "e9070b9ff4e26f00",
+        "89f7b22a3f262a8d",
+        "1d6504bfd93e1f5f"
+      ]
+    },
+    {
+      "id": "r023",
+      "intent_type": "understand",
+      "question": "How does Response.text determine the character encoding to use when decoding the",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "ddd6ae4f8738a52b",
+        "6eaa0c97a3d15c37",
+        "9a1629b2f79b5357"
+      ]
+    },
+    {
+      "id": "r024",
+      "intent_type": "understand",
+      "question": "How does HTTPAdapter.send handle SSL certificate verification for HTTPS connecti",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "3f557313d0361587",
+        "c709b6952e5bd2f2",
+        "dfc4d9de95e91bc1"
+      ]
+    },
+    {
+      "id": "r025",
+      "intent_type": "compare",
+      "question": "What is the difference between the module-level requests.get() function and Sess",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "1d6504bfd93e1f5f",
+        "4f9efbc1b6dd515f",
+        "d818a6ddd3231dec"
+      ]
+    },
+    {
+      "id": "r026",
+      "intent_type": "compare",
+      "question": "What is the difference between HTTPBasicAuth and HTTPDigestAuth in how they atta",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "3390a36e0e4d92da",
+        "eafb96aa93d132b2",
+        "4c8a2cc8f1daec3e"
+      ]
+    },
+    {
+      "id": "r027",
+      "intent_type": "compare",
+      "question": "What is the difference between Response.text and Response.content in terms of ty",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "ddd6ae4f8738a52b",
+        "6eaa0c97a3d15c37",
+        "9a1629b2f79b5357"
+      ]
+    },
+    {
+      "id": "r028",
+      "intent_type": "compare",
+      "question": "How does Session.send differ from HTTPAdapter.send in terms of responsibilities ",
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 1.0,
+      "retrieved_top3": [
+        "1d6504bfd93e1f5f",
+        "faba9dee23b1f543",
+        "06565f40b6ca9da9"
+      ]
+    },
+    {
+      "id": "r029",
+      "intent_type": "compare",
+      "question": "What is the difference between Request.prepare() and PreparedRequest.prepare() i",
+      "r1": 0.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "mrr": 0.3333333333333333,
+      "retrieved_top3": [
+        "2bb25d7913370ba4",
+        "19e9cdd36469171f",
+        "9f0a1483ba1fc8a6"
+      ]
+    },
+    {
+      "id": "r030",
+      "intent_type": "compare",
+      "question": "How does using Session.prepare_request and then Session.send differ from calling",
+      "r1": 0.0,
+      "r3": 0.0,
+      "r5": 0.0,
+      "mrr": 0.0,
+      "retrieved_top3": [
+        "be8598e738b37d3f",
+        "89f7b22a3f262a8d",
+        "ec3502d9af305e0b"
+      ]
+    }
+  ]
+}
