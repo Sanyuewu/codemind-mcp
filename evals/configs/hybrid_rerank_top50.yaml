@@ -1,0 +1,8 @@
+# Hybrid + Reranker, rerank_input_top_k=50 (locate ablation)
+# Testing whether larger candidate pool improves locate R@5
+enable_reranker: true
+bm25_top_k: 20
+dense_top_k: 20
+rrf_k: 60
+rerank_input_top_k: 50
+retrieval_timeout_ms: 60000
