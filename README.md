@@ -34,6 +34,19 @@ MCP-compatible client). Your code never leaves your machine.
 
 ---
 
+## How it compares
+
+|  | CodeMind MCP | GitHub Copilot | Cursor | Codebase-aware GPT plugins |
+|--|--|--|--|--|
+| Code leaves machine | **No — fully local** | Yes (GitHub cloud) | Yes (cloud) | Yes (cloud) |
+| Private / air-gapped repos | **Yes** | No | No | No |
+| Retrieval pipeline | **Full control** | Black box | Black box | Black box |
+| Recall measured | **R@5 = 0.60** | Not published | Not published | Not published |
+| Latency p50 (CPU) | **109 ms** (no reranker) / 17 s (full pipeline) | Network-bound | Network-bound | Network-bound |
+| Cost at scale | **Free (local compute)** | Subscription | Subscription | API fees |
+
+---
+
 ## Features
 
 - **Hybrid retrieval** — BM25 (keyword) + BGE-M3 (semantic) fused with Reciprocal Rank Fusion

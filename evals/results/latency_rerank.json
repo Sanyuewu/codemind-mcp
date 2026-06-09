@@ -1,0 +1,315 @@
+{
+  "timestamp": "2026-06-09T12:33:25",
+  "config": "hybrid_rerank",
+  "repo_path": "E:\\DPJ\\repos\\fastapi",
+  "n_queries": 50,
+  "n_timed_out": 0,
+  "n_runs_per_query": 1,
+  "warm_up_runs": 0,
+  "p50_ms": 17331.3,
+  "p95_ms": 39326.5,
+  "p99_ms": 42779.1,
+  "mean_ms": 17734.3,
+  "per_query": [
+    {
+      "id": "q001",
+      "question": "Where is the jsonable_encoder function implemented in FastAP",
+      "median_ms": 24464.9,
+      "timed_out": false
+    },
+    {
+      "id": "q002",
+      "question": "Where is the request_response function defined in FastAPI's ",
+      "median_ms": 24153.9,
+      "timed_out": false
+    },
+    {
+      "id": "q003",
+      "question": "Where is the websocket_session function defined in FastAPI?",
+      "median_ms": 25191.8,
+      "timed_out": false
+    },
+    {
+      "id": "q004",
+      "question": "Where is get_request_handler implemented in the FastAPI rout",
+      "median_ms": 24342.6,
+      "timed_out": false
+    },
+    {
+      "id": "q005",
+      "question": "Where is the APIWebSocketRoute class defined in FastAPI?",
+      "median_ms": 25497.5,
+      "timed_out": false
+    },
+    {
+      "id": "q006",
+      "question": "Where is the APIRoute class defined in FastAPI?",
+      "median_ms": 24555.7,
+      "timed_out": false
+    },
+    {
+      "id": "q007",
+      "question": "Where is the APIRouter class implemented in FastAPI?",
+      "median_ms": 25184.8,
+      "timed_out": false
+    },
+    {
+      "id": "q008",
+      "question": "Where is the FastAPI application class defined?",
+      "median_ms": 24332.9,
+      "timed_out": false
+    },
+    {
+      "id": "q009",
+      "question": "Where is http_exception_handler implemented in FastAPI?",
+      "median_ms": 25962.6,
+      "timed_out": false
+    },
+    {
+      "id": "q010",
+      "question": "Where is request_validation_exception_handler defined in Fas",
+      "median_ms": 25639.6,
+      "timed_out": false
+    },
+    {
+      "id": "q011",
+      "question": "Where is websocket_request_validation_exception_handler defi",
+      "median_ms": 25816.9,
+      "timed_out": false
+    },
+    {
+      "id": "q012",
+      "question": "Where is BackgroundTasks.add_task implemented in FastAPI?",
+      "median_ms": 26506.8,
+      "timed_out": false
+    },
+    {
+      "id": "q013",
+      "question": "Where is the UploadFile class defined in FastAPI?",
+      "median_ms": 26358.2,
+      "timed_out": false
+    },
+    {
+      "id": "q014",
+      "question": "Where is OAuth2PasswordRequestForm.__init__ implemented?",
+      "median_ms": 24526.3,
+      "timed_out": false
+    },
+    {
+      "id": "q015",
+      "question": "Where is the OAuth2PasswordBearer class defined in FastAPI s",
+      "median_ms": 25788.3,
+      "timed_out": false
+    },
+    {
+      "id": "q016",
+      "question": "Where is OAuth2AuthorizationCodeBearer.__call__ implemented ",
+      "median_ms": 26116.7,
+      "timed_out": false
+    },
+    {
+      "id": "q017",
+      "question": "Where is the base OAuth2.__call__ method defined in FastAPI?",
+      "median_ms": 25079.0,
+      "timed_out": false
+    },
+    {
+      "id": "q018",
+      "question": "Where is APIKeyHeader.__call__ implemented in FastAPI?",
+      "median_ms": 25138.9,
+      "timed_out": false
+    },
+    {
+      "id": "q019",
+      "question": "Where is the get_dependant function defined in FastAPI's dep",
+      "median_ms": 24366.5,
+      "timed_out": false
+    },
+    {
+      "id": "q020",
+      "question": "Where is the get_openapi function implemented for OpenAPI sc",
+      "median_ms": 25216.2,
+      "timed_out": false
+    },
+    {
+      "id": "q021",
+      "question": "How does FastAPI handle background tasks that should run aft",
+      "median_ms": 9085.0,
+      "timed_out": false
+    },
+    {
+      "id": "q022",
+      "question": "How does OAuth2PasswordBearer authenticate and extract Beare",
+      "median_ms": 8289.7,
+      "timed_out": false
+    },
+    {
+      "id": "q023",
+      "question": "How does FastAPI generate its OpenAPI schema from route defi",
+      "median_ms": 8378.9,
+      "timed_out": false
+    },
+    {
+      "id": "q024",
+      "question": "How does get_dependant analyze a function's parameters to bu",
+      "median_ms": 8449.9,
+      "timed_out": false
+    },
+    {
+      "id": "q025",
+      "question": "How does solve_dependencies resolve and inject dependency va",
+      "median_ms": 8630.9,
+      "timed_out": false
+    },
+    {
+      "id": "q026",
+      "question": "How does APIRoute match incoming HTTP requests and dispatch ",
+      "median_ms": 8839.5,
+      "timed_out": false
+    },
+    {
+      "id": "q027",
+      "question": "How does FastAPI handle RequestValidationError and what resp",
+      "median_ms": 8694.9,
+      "timed_out": false
+    },
+    {
+      "id": "q028",
+      "question": "How does jsonable_encoder convert non-JSON-serializable Pyth",
+      "median_ms": 8956.9,
+      "timed_out": false
+    },
+    {
+      "id": "q029",
+      "question": "How does get_request_handler create an ASGI-compatible calla",
+      "median_ms": 8474.3,
+      "timed_out": false
+    },
+    {
+      "id": "q030",
+      "question": "How does OAuth2AuthorizationCodeBearer.__call__ validate aut",
+      "median_ms": 8197.8,
+      "timed_out": false
+    },
+    {
+      "id": "q031",
+      "question": "How does UploadFile extend Starlette's file upload handling ",
+      "median_ms": 8377.0,
+      "timed_out": false
+    },
+    {
+      "id": "q032",
+      "question": "How does get_swagger_ui_html generate the HTML page that ren",
+      "median_ms": 8554.5,
+      "timed_out": false
+    },
+    {
+      "id": "q033",
+      "question": "How does the base OAuth2.__call__ method handle authenticati",
+      "median_ms": 32166.0,
+      "timed_out": false
+    },
+    {
+      "id": "q034",
+      "question": "How does OAuth2PasswordRequestForm collect username and pass",
+      "median_ms": 42779.1,
+      "timed_out": false
+    },
+    {
+      "id": "q035",
+      "question": "How does APIKeyQuery.__call__ extract API keys from URL quer",
+      "median_ms": 41215.7,
+      "timed_out": false
+    },
+    {
+      "id": "q036",
+      "question": "How does websocket_session handle the lifecycle of a WebSock",
+      "median_ms": 39326.5,
+      "timed_out": false
+    },
+    {
+      "id": "q037",
+      "question": "How does request_response wrap an async endpoint function as",
+      "median_ms": 17331.3,
+      "timed_out": false
+    },
+    {
+      "id": "q038",
+      "question": "How does SecurityScopes declare and carry OAuth2 scope requi",
+      "median_ms": 7220.3,
+      "timed_out": false
+    },
+    {
+      "id": "q039",
+      "question": "How does APIKeyCookie.__call__ extract API keys from HTTP co",
+      "median_ms": 8232.0,
+      "timed_out": false
+    },
+    {
+      "id": "q040",
+      "question": "How does get_authorization_scheme_param parse the Authorizat",
+      "median_ms": 8659.7,
+      "timed_out": false
+    },
+    {
+      "id": "q041",
+      "question": "What is the difference between OAuth2PasswordBearer and APIK",
+      "median_ms": 8136.7,
+      "timed_out": false
+    },
+    {
+      "id": "q042",
+      "question": "How do APIKeyQuery and APIKeyHeader differ in extracting API",
+      "median_ms": 8526.5,
+      "timed_out": false
+    },
+    {
+      "id": "q043",
+      "question": "What is the difference between OAuth2PasswordBearer and OAut",
+      "median_ms": 8219.9,
+      "timed_out": false
+    },
+    {
+      "id": "q044",
+      "question": "How does http_exception_handler differ from request_validati",
+      "median_ms": 7968.6,
+      "timed_out": false
+    },
+    {
+      "id": "q045",
+      "question": "What is the difference between APIRoute and APIWebSocketRout",
+      "median_ms": 8239.1,
+      "timed_out": false
+    },
+    {
+      "id": "q046",
+      "question": "How does get_request_handler differ from request_response in",
+      "median_ms": 8363.7,
+      "timed_out": false
+    },
+    {
+      "id": "q047",
+      "question": "What is the difference between OAuth2PasswordRequestForm and",
+      "median_ms": 8371.6,
+      "timed_out": false
+    },
+    {
+      "id": "q048",
+      "question": "How do get_swagger_ui_html and get_redoc_html differ in gene",
+      "median_ms": 8433.2,
+      "timed_out": false
+    },
+    {
+      "id": "q049",
+      "question": "What is the difference between OAuth2PasswordBearer.__call__",
+      "median_ms": 8350.4,
+      "timed_out": false
+    },
+    {
+      "id": "q050",
+      "question": "How does the base OAuth2.__call__ differ from OAuth2Password",
+      "median_ms": 8006.5,
+      "timed_out": false
+    }
+  ]
+}

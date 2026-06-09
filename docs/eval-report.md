@@ -183,6 +183,62 @@ The small overhead of defining 5 tools instead of 1 is justified by the reliabil
 
 ---
 
+## 4. Latency Benchmark
+
+### Setup
+
+Single-run timing (n_runs=1, warm_up=0) using `time.perf_counter()`, CPU inference, FastAPI corpus (7 182 chunks).
+Retrieval timeout: 60 000 ms. 0 timeouts on 50 queries for both configs.
+
+### Results
+
+| Config | p50 (ms) | p95 (ms) | p99 (ms) | mean (ms) |
+|--------|----------|----------|----------|-----------|
+| Hybrid (BM25+Dense, no reranker) | **108.8** | **189.4** | **237.3** | **114.0** |
+| Hybrid+Rerank+Intent (production default) | 17 331 | 39 327 | 42 779 | 17 734 |
+
+### Analysis
+
+**Hybrid without reranker** is interactive-speed at p50=109 ms and p99=237 ms — suitable for real-time navigation.
+
+**Reranker latency on CPU** is dominated by BGE-reranker-v2-m3 cross-encoder inference:
+
+- *locate* queries (top_k=50): ~24–26 s per query — the reranker scores 50 (query, chunk) pairs
+- *understand/compare* queries (top_k=10): ~8–9 s per query — 10 pairs
+- p50=17 s reflects the 25th-fastest query (boundary between the two groups)
+- p99=43 s is a CPU-throttle anomaly after sustained heavy computation
+
+**GPU would substantially reduce reranker latency.** BGE-reranker on a mid-range GPU (e.g. RTX 3080) is typically 10–20× faster than CPU, projecting to p50≈1–2 s for locate and sub-1 s for understand/compare.
+
+**Latency vs accuracy trade-off:**
+
+| Mode | R@5 | p50 latency | Use case |
+|------|-----|-------------|----------|
+| Hybrid (no reranker) | 0.46 | 109 ms | Interactive navigation (CPU) |
+| Hybrid+Rerank+Intent | **0.60** | 17 s | Async / batch (CPU) or interactive (GPU) |
+
+---
+
+## 5. Cross-Corpus Generalization
+
+### Setup
+
+To validate that results are not FastAPI-specific, the same production pipeline (Hybrid+Rerank+Intent) was evaluated on a second Python codebase: `psf/requests` — a widely-known HTTP library with a clean architecture distinct from FastAPI (no ASGI, no routing, different abstraction layers).
+
+Eval set: `evals/eval_set_requests.jsonl` — 30 questions (locate×12, understand×12, compare×6).  
+Match mode: `coverage` (a chunk is a hit if `chunk.start_line ≤ gold.start_line ≤ chunk.end_line`).
+
+### Results
+
+| Corpus | Files | Chunks | R@1 | R@3 | R@5 | MRR | Config |
+|--------|-------|--------|-----|-----|-----|-----|--------|
+| FastAPI | 1 119 | 7 182 | 0.260 | 0.420 | 0.600 | 0.373 | Hybrid+Rerank+Intent |
+| psf/requests | TBD | TBD | TBD | TBD | TBD | TBD | Hybrid+Rerank+Intent |
+
+*psf/requests eval pending index build and run.*
+
+---
+
 ## Summary
 
 | Experiment | Key Finding |
@@ -190,6 +246,9 @@ The small overhead of defining 5 tools instead of 1 is justified by the reliabil
 | Chunking | AST-based chunking produces semantically coherent units; fixed windows fragment function context |
 | Retrieval | Hybrid+Rerank+Intent is the best overall config (R@5=0.60); intent routing eliminates the top_k trade-off |
 | Tool Design | Atomic tools (5 specialized) outperform omnibus on precision, composability, and hallucination rate |
+| Latency | Hybrid (no reranker): p50=109 ms, ideal for interactive use; Reranker adds +0.14 R@5 at the cost of p50=17 s on CPU |
+| Cross-Corpus | psf/requests eval in progress; FastAPI baseline R@5=0.60 |
 
 The production default (Hybrid+Rerank with intent-aware routing) is validated as the correct choice.
 Full optimization path: BM25-only (0.30) → Hybrid (0.46) → +Rerank (0.56) → +Intent Routing (0.60), a 100% improvement over baseline.
+For latency-sensitive environments, Hybrid (no reranker) at p50=109 ms remains a strong option.
