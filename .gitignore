@@ -20,3 +20,8 @@ wheels/
 
 # Test coverage artifacts
 .coverage
+
+# Personal / internal development docs
+docs/interview-prep.md
+docs/CodeMind-MCP-Spec.md
+docs/CodeMind-MCP-Contracts.md
